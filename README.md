@@ -72,3 +72,65 @@ To connect a domain, navigate to Project > Settings > Domains and click Connect 
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
 # anomaly-glance
+
+## Project structure
+
+- `src/` React dashboard that visualizes health checks and anomaly records.
+- `server/` Express API responsible for connecting to Postgres.
+- `db/schema.sql` Helper script you can run inside `psql` to create the database.
+- `env.example` Sample environment variables (copy to `.env`).
+
+## Getting started
+
+1. **Install dependencies**
+
+   ```sh
+   npm install
+   ```
+
+2. **Provision Postgres**
+
+   - Start a local Postgres instance (Docker example below) or point `DATABASE_URL` to an existing server.
+   - Run `psql -f db/schema.sql` to create the `anomalies` table. The script assumes the `anomaly_glance` database already exists.
+
+   Docker example:
+
+   ```sh
+   docker run --name anomaly-postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:16
+   createdb -h localhost -U postgres anomaly_glance
+   psql -h localhost -U postgres -f db/schema.sql
+   ```
+
+3. **Configure environment**
+
+   ```sh
+   cp env.example .env
+   # adjust DATABASE_URL / PORT as needed
+   ```
+
+4. **Run everything**
+
+   ```sh
+   npm run dev:full   # starts Vite (8080) + API server (4000)
+   ```
+
+   Alternatively, run `npm run server:dev` and `npm run dev` in separate terminals.
+
+## API surface
+
+| Method | Path             | Description                         |
+| ------ | ---------------- | ----------------------------------- |
+| GET    | `/api/health`    | Verifies API ↔ Postgres connectivity |
+| GET    | `/api/anomalies` | Lists the latest 100 anomalies      |
+| POST   | `/api/anomalies` | Inserts a new anomaly record        |
+
+Sample payload for `POST /api/anomalies`:
+
+```json
+{
+  "title": "CPU spike on edge-worker",
+  "description": "Worker-3 keeps hitting 95% for 10 minutes.",
+  "severity": "high",
+  "detectedAt": "2025-01-01T13:37:00.000Z"
+}
+```
