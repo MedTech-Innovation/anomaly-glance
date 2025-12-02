@@ -1,6 +1,9 @@
 import type { Anomaly, ApiHealth, NewAnomalyPayload } from "../types/anomaly";
 
-const API_BASE_URL = "/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") || "http://localhost:8000";
+
+const buildUrl = (path: string) => `${API_BASE_URL}${path}`;
 
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -11,17 +14,17 @@ async function handleResponse<T>(res: Response): Promise<T> {
 }
 
 export async function getHealth(): Promise<ApiHealth> {
-  const res = await fetch(`${API_BASE_URL}/health`);
+  const res = await fetch(buildUrl("/health"));
   return handleResponse<ApiHealth>(res);
 }
 
 export async function listAnomalies(): Promise<Anomaly[]> {
-  const res = await fetch(`${API_BASE_URL}/anomalies`);
+  const res = await fetch(buildUrl("/anomalies"));
   return handleResponse<Anomaly[]>(res);
 }
 
 export async function createAnomaly(payload: NewAnomalyPayload): Promise<Anomaly> {
-  const res = await fetch(`${API_BASE_URL}/anomalies`, {
+  const res = await fetch(buildUrl("/anomalies"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
