@@ -1,0 +1,48 @@
+{
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "anomaly_glance",
+            "database": "createdb anomaly_glance",
+            "username": "root",
+            "password": "root"
+        },
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "anomaly_glance1",
+            "database": "createdb anomaly_glance",
+            "username": "postgres",
+            "password": "root"
+        },
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "username": "postgres",
+            "database": "createdb anomaly_glance",
+            "name": "anomaly_glance2"
+        },
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "username": "openpg",
+            "database": "createdb anomaly_glance",
+            "name": "anomaly_glance3",
+            "password": "root"
+        }
+    ]
+}
